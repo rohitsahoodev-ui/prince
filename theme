@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# ================================
+#   🎨 Pterodactyl Theme Menu
+# ================================
+
+while true; do
+    clear
+    echo "======================================"
+    echo " 🎨 PTERODACTYL THEME INSTALLER"
+    echo "======================================"
+    echo "1) 🚀 Install Nebula Theme (One Click)"
+    echo "2) 🌙 Install Nook Theme"
+    echo "3) 🗑️  Uninstall Theme"
+    echo "0) ❌ Exit"
+    echo "--------------------------------------"
+    read -p "Choose an option: " choice
+
+    case $choice in
+        1)
+            clear
+            echo "==============================================="
+            echo " 🚀 Installing Nebula Theme..."
+            echo "==============================================="
+
+            # Safety check
+            if [ ! -d "/var/www/pterodactyl" ]; then
+                echo "❌ Pterodactyl not found in /var/www/pterodactyl"
+                exit 1
+            fi
+
+            cd /root || exit 1
+
+            # Clean old folder
+            rm -rf IPV6-Nebula
+
+            # Clone repo
+            git clone https://github.com/ParaNoob123/IPV6-Nebula
+
+            # Move blueprint
+            mv IPV6-Nebula/nebula.blueprint /var/www/pterodactyl/
+
+            # Install theme
+            cd /var/www/pterodactyl || exit 1
+            blueprint -install nebula
+
+            echo ""
+            echo "✅ Nebula Theme installed successfully!"
+            echo "🔁 Restart panel & wings recommended"
+            ;;
+        2)
+            clear
+            echo "==============================================="
+            echo " 🌙 Installing Nook Theme..."
+            echo "==============================================="
+
+            bash <(curl -sSL https://raw.githubusercontent.com/ItsMePara123/GG/refs/heads/main/nookthemeinstall)
+
+            echo ""
+            echo "✅ Nook Theme installed successfully!"
+            ;;
+        3)
+            clear
+            echo "==============================================="
+            echo " 🗑️  Uninstalling Theme..."
+            echo "==============================================="
+
+            bash <(curl -sSL https://raw.githubusercontent.com/ItsMePara123/GG/refs/heads/main/uninstalltheme)
+
+            echo ""
+            echo "✅ Theme uninstalled & panel restored!"
+            ;;
+        0)
+            echo "👋 Exiting..."
+            exit 0
+            ;;
+        *)
+            echo "❌ Invalid option!"
+            ;;
+    esac
+
+    echo ""
+    read -p "Press Enter to return to menu..."
+done
